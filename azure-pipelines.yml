@@ -1,9 +1,9 @@
-# Runs automatically on every push to main: build, then deploy to Azure App Service.
+# Runs on every push to main: build, test, then deploy to Azure App Service.
 trigger:
   - main
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'ubuntu-24.04'
 
 variables:
   buildConfiguration: 'Release'
@@ -23,7 +23,10 @@ steps:
   - script: dotnet build --configuration $(buildConfiguration) --no-restore
     displayName: 'Build'
 
-  - script: dotnet publish --configuration $(buildConfiguration) --no-build --output $(Build.ArtifactStagingDirectory)
+  - script: dotnet test --configuration $(buildConfiguration) --no-build
+    displayName: 'Run tests'
+
+  - script: dotnet publish AccessTracker/AccessTracker.csproj --configuration $(buildConfiguration) --no-build --output $(Build.ArtifactStagingDirectory)
     displayName: 'Publish'
 
   - task: AzureWebApp@1
