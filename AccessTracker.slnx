@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="AccessTracker.Tests/AccessTracker.Tests.csproj" />
   <Project Path="AccessTracker/AccessTracker.csproj" />
 </Solution>
