@@ -1,0 +1,35 @@
+# Runs automatically on every push to main: build, then deploy to Azure App Service.
+trigger:
+  - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+  azureServiceConnection: 'Azure-AccessTracker'
+  webAppName: 'accesstracker-web-tb'
+
+steps:
+  - task: UseDotNet@2
+    displayName: 'Install .NET SDK'
+    inputs:
+      packageType: 'sdk'
+      version: '10.x'
+
+  - script: dotnet restore
+    displayName: 'Restore packages'
+
+  - script: dotnet build --configuration $(buildConfiguration) --no-restore
+    displayName: 'Build'
+
+  - script: dotnet publish --configuration $(buildConfiguration) --no-build --output $(Build.ArtifactStagingDirectory)
+    displayName: 'Publish'
+
+  - task: AzureWebApp@1
+    displayName: 'Deploy to Azure App Service'
+    inputs:
+      azureSubscription: '$(azureServiceConnection)'
+      appType: 'webApp'
+      appName: '$(webAppName)'
+      package: '$(Build.ArtifactStagingDirectory)'
