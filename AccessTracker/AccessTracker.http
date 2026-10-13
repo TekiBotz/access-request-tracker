@@ -1,6 +1,28 @@
-@AccessTracker_HostAddress = http://localhost:5212
+@base = https://accesstracker-web-tb-b4atayfzanfygcbe.centralus-01.azurewebsites.net
+# For the local container instead, comment the line above and use:
+# @base = http://localhost:8080
 
-GET {{AccessTracker_HostAddress}}/weatherforecast/
-Accept: application/json
+### Submit a request
+POST {{base}}/api/requests
+Content-Type: application/json
 
-###
+{
+  "requesterName": "Jarrale",
+  "resourceId": 1,
+  "reason": "Need the finance drive"
+}
+
+### List all requests
+GET {{base}}/api/requests
+
+### List only pending
+GET {{base}}/api/requests?status=Pending
+
+### Get one request with its history
+GET {{base}}/api/requests/1
+
+### Approve a request
+POST {{base}}/api/requests/1/approve?adminName=Trevor
+
+### Deny a request
+POST {{base}}/api/requests/2/deny?adminName=Trevor
