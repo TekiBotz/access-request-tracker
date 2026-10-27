@@ -1,8 +1,6 @@
 # Access Request Tracker
 
-A small ASP.NET Core Web API for tracking resource access requests. A user submits a request for access to a resource, an admin approves or denies it, and every decision is written to an audit trail.
-
-I built this to practice the full path a .NET service takes from code to a running cloud app: the API, a database, automated deployment, and the infrastructure around it.
+ASP.NET Core Web API for tracking resource access requests. A user submits a request for access to a resource, an admin approves or denies it, and every decision is written to an audit trail.
 
 ## What it does
 
